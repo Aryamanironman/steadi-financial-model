@@ -64,8 +64,8 @@
   .hero-card{background:var(--ink);color:#fff;border-radius:4px;padding:32px;position:relative;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--green-500);overflow:hidden}
   .hero-card::after{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(118,185,0,.25),transparent 70%);pointer-events:none}
   .hero-card h3{margin:0 0 8px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--green-300);font-weight:600;letter-spacing:.18em;text-transform:uppercase}
-  .hero-card .big{font-size:64px;font-family:var(--font-mono);font-weight:800;letter-spacing:-.03em;color:#fff;line-height:1}
-  .hero-card .big .dollar{color:var(--green-300);font-size:36px;margin-right:6px}
+  .hero-card .big{font-size:clamp(26px,3.3vw,54px);font-family:var(--font-mono);font-weight:800;letter-spacing:-.03em;color:#fff;line-height:1}
+  .hero-card .big .dollar{color:var(--green-300);font-size:.56em;margin-right:4px}
   .hero-card .sub{color:#D0D6CC;font-size:var(--t-small);margin-top:14px;line-height:1.5}
   .hero-card .pill{display:inline-block;background:var(--green-500);color:var(--ink);font-family:var(--font-mono);font-size:var(--t-tiny);font-weight:700;padding:5px 10px;border-radius:2px;letter-spacing:.12em;margin-top:14px}
 
@@ -89,7 +89,7 @@
 
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
   .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .card{background:var(--surface);border:2px solid var(--ink);border-radius:4px;padding:28px;box-shadow:4px 4px 0 var(--ink);position:relative}
+  .card{background:var(--surface);border:2px solid var(--ink);border-radius:4px;padding:28px;box-shadow:4px 4px 0 var(--ink);position:relative;overflow-x:auto}
   .card h3{font-size:var(--t-h3);font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
   .card .lede{color:var(--ink-soft);font-size:var(--t-small);margin-bottom:20px;line-height:1.5}
 
@@ -262,8 +262,8 @@
   .src-item .st{font-weight:700;color:var(--ink-2)}
   .src-item a{word-break:break-all;font-size:12px}
   .src-item .used{display:block;margin-top:5px;color:var(--ink-dim);font-family:var(--font-mono);font-size:11px}
-  .srccol{font-size:12px!important;font-family:var(--font-mono)!important;color:var(--ink-dim)!important;text-align:left!important}
-  .srccol a{font-size:12px}
+  .srccol{font-size:12px!important;font-family:var(--font-mono)!important;color:var(--ink-dim)!important;text-align:left!important;overflow-wrap:anywhere;word-break:break-word}
+  .srccol a{font-size:12px;overflow-wrap:anywhere;word-break:break-word}
   .tbl td .assump,.tbl th .assump{margin-left:0}
 
   @media (max-width:1100px){
@@ -282,10 +282,14 @@
   /* =================================================================
      SHARED SCROLL BEHAVIOUR — wide tables & charts never squash
      ================================================================= */
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;overflow-x:hidden}
   body{overflow-x:hidden}
   img,svg{max-width:100%}
   .tbl{scrollbar-width:thin}
+  .mobile-hint{display:none}
+  /* grid/flex children must be allowed to shrink below their content width,
+     otherwise a wide table silently widens the whole page on a phone */
+  .grid-2>*,.grid-3>*,.kpis>*,.scenarios>*,.hero>*,.donut-row>*,.channel-row>*,.formula-equation>*,.division-row>*{min-width:0}
 
   /* =================================================================
      PHONES & SMALL TABLETS
@@ -293,16 +297,18 @@
   @media (max-width:760px){
     body{padding:18px 14px 64px}
 
-    .topbar{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:30px;padding-bottom:18px;border-bottom-width:2px}
-    .brand{gap:12px}
-    .meta{text-align:left;font-size:11px;line-height:1.9;letter-spacing:.1em}
+    .topbar{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:26px;padding-bottom:16px;border-bottom-width:2px}
+    .brand{gap:11px}
+    .brand-mark{width:44px;height:44px;font-size:21px}
+    .brand-text{font-size:12px;letter-spacing:.1em}
+    .meta{text-align:left;font-size:10.5px;line-height:1.7;letter-spacing:.06em}
 
     .hero{gap:22px;margin-bottom:38px}
     .hero h1{margin-bottom:16px}
     .hero p{font-size:16px}
     .hero-card{padding:22px 20px;box-shadow:5px 5px 0 var(--green-500)}
-    .hero-card .big{font-size:34px}
-    .hero-card .big .dollar{font-size:20px}
+    .hero-card .big{font-size:32px}
+    .hero-card .big .dollar{font-size:.62em}
     .hero-tags{gap:6px;margin-top:16px}
     .tag{font-size:10px;padding:5px 9px;letter-spacing:.05em}
 
@@ -312,33 +318,39 @@
     .section-head h2 .num{display:block;margin:0 0 4px;font-size:14px;vertical-align:0}
     .section-head .hint{font-size:10px}
 
+    .mobile-hint{display:inline}
+
     .kpis{grid-template-columns:1fr 1fr;gap:12px;margin-bottom:36px}
     .kpi{padding:16px 14px 14px;box-shadow:3px 3px 0 var(--ink)}
     .kpi:hover{transform:none;box-shadow:3px 3px 0 var(--ink)}
     .kpi .label{font-size:10px;letter-spacing:.12em;margin-bottom:8px}
     .kpi .value{font-size:23px}
-    .kpi .delta{font-size:11px}
+    .kpi .delta{font-size:12px}
 
     .card{padding:18px 16px;box-shadow:3px 3px 0 var(--ink)}
     .card h3{font-size:19px}
     .card .lede{font-size:14px;margin-bottom:16px}
 
-    /* tables scroll horizontally instead of squashing */
-    .tbl{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:13px}
-    .tbl th{padding:9px 9px;font-size:9px;letter-spacing:.06em}
-    .tbl td{padding:10px 9px}
-    .tbl .grand-total td{font-size:16px;padding-top:14px;padding-bottom:14px}
+    /* each table scrolls inside its own box, so the card heading stays put */
+    .tbl{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:12.5px}
+    .card{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .tbl th{padding:9px 8px;font-size:10.5px;letter-spacing:.03em;white-space:normal}
+    .tbl td{padding:10px 8px}
+    .tbl .grand-total td{font-size:15px;padding-top:14px;padding-bottom:14px}
+    .tbl .pct{font-size:11px}
 
-    /* bar charts: fixed minimum column width, swipe to see the rest */
-    .bars{height:250px;padding:36px 0 36px;grid-template-columns:repeat(5,minmax(84px,1fr));overflow-x:auto;overflow-y:hidden}
-    .waterfall{height:230px;padding:36px 0 36px;grid-template-columns:repeat(5,minmax(84px,1fr));overflow-x:auto;overflow-y:hidden}
-    .bar .val,.wf .v{font-size:12px;padding:2px 6px}
-    .bar-col .lbl,.wf-label{font-size:12px}
+    /* charts fit the screen — no squeezed columns, no hidden labels */
+    .bars{height:250px;padding:40px 0 34px;gap:10px}
+    .waterfall{height:230px;padding:40px 0 34px;gap:10px}
+    .bar .val,.wf .v{font-size:11px;padding:2px 5px;letter-spacing:-.02em}
+    .bar-col .lbl,.wf-label{font-size:11px}
+    .line-chart .pt-label{font-size:10px;text-anchor:end}
+    .line-chart .axis-label,.line-chart .axis-tick{font-size:10px}
 
-    .year-track{grid-template-columns:repeat(5,minmax(104px,1fr));overflow-x:auto;overflow-y:hidden}
-    .year-cell{padding:12px 8px}
-    .year-cell .yv{font-size:16px}
-    .year-cell .yp{font-size:10px}
+    .year-track{gap:0}
+    .year-cell{padding:12px 5px}
+    .year-cell .yv{font-size:12.5px}
+    .year-cell .yp{font-size:10px;letter-spacing:0}
 
     .channel-row{grid-template-columns:1fr;gap:6px;padding:12px 0}
     .channel-row .ch-units{text-align:left;font-size:20px}
@@ -356,7 +368,8 @@
     .div-pile{grid-template-columns:repeat(12,1fr)}
     .line-chart{height:230px}
 
-    .notice,.callout{font-size:14px;padding:12px 13px}
+    .notice,.callout{font-size:14px;padding:12px 13px;line-height:1.5}
+    .lede,.hero p,.scen ul li{overflow-wrap:break-word}
     .srclist{grid-template-columns:1fr;gap:10px}
     .src-item{font-size:13px}
     .src-item a{font-size:12px}
@@ -409,7 +422,7 @@
 
   <!-- SOURCING LEGEND -->
   <div class="notice" style="margin:0 0 36px">
-    <strong>How to read this page.</strong> Every figure taken from an outside source carries a small numbered link — <sup class="ref"><a href="#s1">1</a></sup> — which jumps to the full citation in <a href="#sources">Sources &amp; assumptions</a> at the bottom. Every figure that is <em>our own model output</em> is tagged <span class="assump">model assumption</span>, and anything that is a rough estimate rather than a published number is tagged <span class="assump est">estimate</span>. Nothing here is an unattributed figure: each number is either a published figure with a link, or a stated STEADI assumption you can challenge.
+    <strong>How to read this page.</strong> Every figure taken from an outside source carries a small numbered link — <sup class="ref"><a href="#s1">1</a></sup> — which jumps to the full citation in <a href="#sources">Sources &amp; assumptions</a> at the bottom. Every figure that is <em>our own model output</em> is tagged <span class="assump">model assumption</span>, and anything that is a rough estimate rather than a published number is tagged <span class="assump est">estimate</span>. Nothing here is an unattributed figure: each number is either a published figure with a link, or a stated STEADI assumption you can challenge.<span class="mobile-hint"><br><br><strong>On a phone:</strong> the wide data tables scroll sideways — swipe a table with one finger to see the later years.</span>
   </div>
 
   <!-- HERO -->
